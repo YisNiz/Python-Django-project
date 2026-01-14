@@ -60,7 +60,8 @@ def personal_area(request):
 def home(request):
     user = request.user
 
-    tasks = Task.objects.filter(team=user.team) if user.team else Task.objects.none()
+    tasks = Task.objects.filter(team=user.team)\
+        if user.team else Task.objects.none()
 
     status_param = request.GET.get("status", "")
     worker_id = request.GET.get("worker_id")
@@ -71,7 +72,6 @@ def home(request):
         tasks = tasks.filter(worker_id=worker_id)
 
     workers = CustomUser.objects.filter(team=user.team, role=Role.USER) if user.team else CustomUser.objects.none()
-
 
     is_manager = bool(user.team and user.team.admin_id == user.id)
     add_form = TaskForm()
